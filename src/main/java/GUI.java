@@ -163,17 +163,16 @@ public class GUI extends Application {
 
     public void makeDir(List<RecognitionResult> results, String selectedDestination) {
         try {
-            String mainDir = selectedDestination;//Directory to hold all the files.
             ArrayList<String> subDir = new ArrayList<String>();//Arraylist to hold the tags for folder making.
             for (int i = 0; i < results.size(); i++) {//For all results get the best tag name for each
                 List<Tag> tag = results.get(i).getTags();
                 if (!subDir.contains(tag.get(0).getName())) {//Adds all unique tags to array
                     subDir.add(tag.get(0).getName());
-                    File dir = new File(mainDir, tag.get(0).getName());
+                    File dir = new File(selectedDestination, tag.get(0).getName());
                     dir.mkdirs();
                 }
-                String destPath = mainDir + "\\" + subDir.get(subDir.indexOf(tag.get(0).getName())) + "\\" + lists.get(i).getName();//gets name of folder
-                Path destination = Paths.get(destPath).toAbsolutePath(); //gets pathname of folder?
+                String destinationPath = selectedDestination + "\\" + subDir.get(subDir.indexOf(tag.get(0).getName())) + "\\" + lists.get(i).getName();//gets name of folder
+                Path destination = Paths.get(destinationPath).toAbsolutePath(); //gets pathname of folder?
 
                 String sourcePath = lists.get(i).getPath();// Takes file and gets path of it
                 Path source = Paths.get(sourcePath).toAbsolutePath();// gets source path?
@@ -181,7 +180,6 @@ public class GUI extends Application {
                 Files.copy(source, destination);
             }
         } catch (Exception e) {
-            System.out.println("Error");
             e.printStackTrace();
         }
     }
