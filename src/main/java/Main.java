@@ -23,11 +23,34 @@ public class Main {
 
         // Create the client.
         ClarifaiClient client = new ClarifaiClient(secrets[0], secrets[1]);
-
+        List<RecognitionResult> test = Container(client);
         List<RecognitionResult> results = client.recognize(new RecognitionRequest(new File("test.jpg")));
 
         for (Tag tag : results.get(0).getTags()) {
             System.out.println(tag.getName() + ": " + tag.getProbability());
         }
+
     }
+    public  static List<RecognitionResult> Container(ClarifaiClient client){
+        File file = new File("C:\\Images");
+        File[] files = file.listFiles();
+        // These statements check to see if the files are readable since Windows denies access to it's files.
+        if(file.canRead())
+            System.out.println("I made it here");
+        if(!file.canRead())
+            file.setReadable(true);
+        // End of checking.
+        List<RecognitionResult> results = client.recognize(new RecognitionRequest(files));
+        if(results != null) {
+            //Checking Size of List to make sure every file was saved.
+            int z = results.size();
+            System.out.println("I made it?" + "  " + z);
+            return results;
+        }
+        else {
+            System.out.println("Folder is empty");
+            return null;
+        }
+    }
+
 }
