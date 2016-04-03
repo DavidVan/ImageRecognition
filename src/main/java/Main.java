@@ -3,10 +3,13 @@ import com.clarifai.api.RecognitionRequest;
 import com.clarifai.api.RecognitionResult;
 import com.clarifai.api.Tag;
 
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.*;
 import java.util.List;
 
 public class Main {
@@ -41,6 +44,37 @@ public class Main {
             for ( int j = 0; j < tag.size(); j++){
                 System.out.println(tag.get(j).getName() + ": " + tag.get(j).getProbability());
             }
+        }
+        makeDir();
+    }
+    public static void makeDir(List<RecognitionResult> results){
+        try {
+            String mainDir = selectedDestination;//Directory to hold all the files.
+            ArrayList<String> subDir = new ArrayList<String>();//Arraylist to hold the tags for folder making.
+            for (int i = 0; i < results.size(); i++) {//For all results get the best tag name for each
+                List<Tag> tag = results.get(i).getTags();
+                if (!subDir.contains(tag.get(0).getName()))//Adds all unique tags to array
+                    subDir.add(tag.get(0).getName());
+            }
+            for(int i=0; i<subDir.size(); i++){//Makes folders in location according to tags
+                if(subDir.get(i)==null)
+                    return;
+                File dir = new File(mainDir, subDir.get(i));
+                dir.mkdirs();
+            }
+
+            File file = new File(selectedPath);
+            File[] files = file.listFiles();
+
+            for(int i=0; i<files.length; i++){//the eventual move file to folder
+                System.out.println(files[i].toString());
+                //Files.move();
+            }
+
+        }
+        catch(Exception e){
+            System.out.println("Error");
+            e.printStackTrace();
         }
     }
 
