@@ -11,6 +11,9 @@ import java.util.List;
 
 public class Main {
 
+    public static String selectedPath;
+    public static String selectedDestination;
+
     public static void main(String[] args) throws IOException {
 
         // Read in the API keys.
@@ -31,19 +34,24 @@ public class Main {
             System.out.println(tag.getName() + ": " + tag.getProbability());
         }
 
+        GUI.launch(GUI.class);
+        System.out.println(selectedPath);
 
     }
-    public  static List<RecognitionResult> Container(ClarifaiClient client){
+
+    public static List<RecognitionResult> Container(ClarifaiClient client) {
         File file = new File("C:\\Images");
         File[] files = file.listFiles();
         // These statements check to see if the files are readable since Windows denies access to it's files.
-        if(file.canRead())
+        if (file.canRead()) {
             System.out.println("I made it here");
-        if(!file.canRead())
+        }
+        if (!file.canRead()) {
             file.setReadable(true);
+        }
         // End of checking.
         List<RecognitionResult> results = client.recognize(new RecognitionRequest(files));
-        if(results != null) {
+        if (results != null) {
             //Checking Size of List to make sure every file was saved.
             int z = results.size();
             System.out.println("I made it?" + "  " + z);
@@ -54,8 +62,14 @@ public class Main {
             return null;
         }
 
-        GUI.launch(GUI.class);
+    }
 
+    public static void setPath(String s) {
+        selectedPath = s;
+    }
+
+    public static void setDestination(String s) {
+        selectedDestination = s;
     }
 
 }
