@@ -182,7 +182,7 @@ public class GUI extends Application {
                 String sourcePath = lists.get(i).getPath();// Takes file and gets path of it
                 Path source = Paths.get(sourcePath).toAbsolutePath();// gets source path?
 
-                Files.move(source, destination);
+                Files.copy(source, destination);
             }
         } catch (Exception e) {
             System.out.println("Error");
