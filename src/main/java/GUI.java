@@ -4,7 +4,10 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 /**
  * Created by David on 4/2/2016.
@@ -14,12 +17,17 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         Button btn = new Button();
-        btn.setText("Say 'Hello World'");
+        btn.setText("Select Folder");
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                DirectoryChooser chooser = new DirectoryChooser();
+                File folder = chooser.showDialog(primaryStage);
+
+                if (folder != null) {
+                    btn.setText(folder.getAbsolutePath());
+                }
             }
         });
 
@@ -28,7 +36,7 @@ public class GUI extends Application {
 
         Scene scene = new Scene(root, 300, 250);
 
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("Please select a folder.");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
