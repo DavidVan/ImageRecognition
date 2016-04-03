@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
 
         // Read in the API keys.
@@ -29,6 +30,7 @@ public class Main {
         for (Tag tag : results.get(0).getTags()) {
             System.out.println(tag.getName() + ": " + tag.getProbability());
         }
+
 
     }
     public  static List<RecognitionResult> Container(ClarifaiClient client){
@@ -51,6 +53,9 @@ public class Main {
             System.out.println("Folder is empty");
             return null;
         }
+
+        GUI.launch(GUI.class);
+
     }
 
 }
