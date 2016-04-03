@@ -2,6 +2,7 @@ import com.clarifai.api.ClarifaiClient;
 import com.clarifai.api.RecognitionRequest;
 import com.clarifai.api.RecognitionResult;
 import com.clarifai.api.Tag;
+import com.github.sarxos.webcam.Webcam;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,14 +14,15 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.nio.file.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -116,20 +118,14 @@ public class GUI extends Application {
         });
 
         Button selectImage = new Button();
-        selectImage.setText("Select Image");
+        selectImage.setText("Get Video Feed");
         selectImage.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                FileChooser chooser = new FileChooser();
-                File file = chooser.showOpenDialog(primaryStage);
-
-                if (file != null) {
-                    selectImage.setText("Selected - " + file.getAbsolutePath());
-                    selectImage.setDisable(true);
-                    Image image = new Image(file.toURI().toString());
-                    viewer.setImage(image);
-                }
+                Webcam webcam = Webcam.getDefault();
+                webcam.open();
+                FlowPane root = new FlowPane();
             }
         });
 
