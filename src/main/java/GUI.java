@@ -17,6 +17,8 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -119,25 +121,43 @@ public class GUI extends Application {
         });
 
         Button selectImage = new Button();
-        selectImage.setText("Get Video Feed");
+        selectImage.setText("Get Image Feed");
         selectImage.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
                 Webcam webcam = Webcam.getDefault();
                 webcam.open();
+
                 ImageView viewer = new ImageView();
                 viewer.setFitHeight(800);
                 viewer.setFitWidth(600);
-                Image image = SwingFXUtils.toFXImage(webcam.getImage(), null);
+                BufferedImage bi = webcam.getImage();
+                Image image = SwingFXUtils.toFXImage(bi, null);
                 viewer.setImage(image);
+                try {
+                    ImageIO.write(bi, "PNG", new File("temp.png"));
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                File temp = new File("temp.png");
+                List<RecognitionResult> results = client.recognize(new RecognitionRequest(temp));
+
+                Text text = new Text();
+                for (int i = 0; i < results.get(0).getTags().size(); i++) {
+                    Tag tags = results.get(0).getTags().get(i);
+                    text.setText(text.getText() + "\n" + tags.getName() + ": " + tags.getProbability());
+                }
+
                 FlowPane root = new FlowPane();
-                root.getChildren().add(viewer);
+                root.getChildren().addAll(viewer, text);
+
                 Scene scene = new Scene(root, 800, 600);
                 Stage test = new Stage();
                 test.setScene(scene);
                 test.show();
-                webcam.close();
+                //webcam.close();
             }
         });
 
