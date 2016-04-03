@@ -42,11 +42,11 @@ public class Main {
     public static List<RecognitionResult> Container(ClarifaiClient client) {
         File file = new File("C:\\Images");
         File[] files = file.listFiles();
-        // These statements check to see if the files are readable since Windows denies access to it's files.
+        // These statements check to see if the files are readable since the OS denies access to its files.
         if (file.canRead()) {
             System.out.println("I made it here");
         }
-        if (!file.canRead()) {
+        else {
             file.setReadable(true);
         }
         // End of checking.
