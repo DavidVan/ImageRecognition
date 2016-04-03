@@ -32,6 +32,7 @@ import java.util.List;
 public class GUI extends Application {
 
     public List<File> lists; //Saves the lists into an array so we can reaccess the names
+    List<RecognitionResult> results;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -67,7 +68,7 @@ public class GUI extends Application {
                     selectFolder.setDisable(true);
                     //Platform.exit(); // Exits the application.
                     FlowPane root = new FlowPane();
-                    List<RecognitionResult> results = Container(client, folder.getAbsolutePath());
+                    results = Container(client, folder.getAbsolutePath());
                     System.out.println(results.size());
                     for (int i = 0; i < results.size(); i++) {
                         StackPane pane = new StackPane();
@@ -108,6 +109,7 @@ public class GUI extends Application {
                 if (folder != null) {
                     selectDestination.setText("Selected - " + folder.getAbsolutePath());
                     selectDestination.setDisable(true);
+                    makeDir(results, folder.getAbsolutePath());
                     //Platform.exit(); // Exits the application.
                 }
             }
@@ -163,7 +165,7 @@ public class GUI extends Application {
         }
     }
 
-    public void makeDir(List<RecognitionResult> results, String selectedDestination, String selectedPath) {
+    public void makeDir(List<RecognitionResult> results, String selectedDestination) {
         try {
             String mainDir = selectedDestination;//Directory to hold all the files.
             ArrayList<String> subDir = new ArrayList<String>();//Arraylist to hold the tags for folder making.
@@ -171,14 +173,14 @@ public class GUI extends Application {
                 List<Tag> tag = results.get(i).getTags();
                 if (!subDir.contains(tag.get(0).getName())) {//Adds all unique tags to array
                     subDir.add(tag.get(0).getName());
-                    File dir = new File(mainDir,tag.get(0).getName());
+                    File dir = new File(mainDir, tag.get(0).getName());
                     dir.mkdirs();
                 }
-                String destPath=subDir.get(subDir.indexOf(tag.get(0).getName()));//gets name of folder
-                Path destination=Paths.get(destPath).toAbsolutePath(); //gets pathname of folder?
+                String destPath = mainDir + "\\" + subDir.get(subDir.indexOf(tag.get(0).getName())) + "\\" + lists.get(i).getName();//gets name of folder
+                Path destination = Paths.get(destPath).toAbsolutePath(); //gets pathname of folder?
 
-                String sourcePath=lists.get(i).getPath();// Takes file and gets path of it
-                Path source=Paths.get(sourcePath).toAbsolutePath();// gets source path?
+                String sourcePath = lists.get(i).getPath();// Takes file and gets path of it
+                Path source = Paths.get(sourcePath).toAbsolutePath();// gets source path?
 
                 Files.move(source, destination);
             }
