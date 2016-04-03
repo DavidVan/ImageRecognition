@@ -40,6 +40,7 @@ public class GUI extends Application {
                     Main.setPath(folder.getAbsolutePath());
                     selectFolder.setText("Selected - " + folder.getAbsolutePath());
                     selectFolder.setDisable(true);
+                    Platform.exit(); // Exits the application.
                 }
             }
         });

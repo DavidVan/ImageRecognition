@@ -27,7 +27,6 @@ public class Main {
 
         // Create the client.
         ClarifaiClient client = new ClarifaiClient(secrets[0], secrets[1]);
-        List<RecognitionResult> test = Container(client);
         List<RecognitionResult> results = client.recognize(new RecognitionRequest(new File("test.jpg")));
 
         for (Tag tag : results.get(0).getTags()) {
@@ -37,10 +36,12 @@ public class Main {
         GUI.launch(GUI.class);
         System.out.println(selectedPath);
 
+        List<RecognitionResult> test = Container(client);
+
     }
 
     public static List<RecognitionResult> Container(ClarifaiClient client) {
-        File file = new File("C:\\Images");
+        File file = new File(selectedPath);
         File[] files = file.listFiles();
         // These statements check to see if the files are readable since the OS denies access to its files.
         if (file.canRead()) {
