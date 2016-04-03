@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -67,6 +69,7 @@ public class GUI extends Application {
                     List<RecognitionResult> results = Container(client, folder.getAbsolutePath());
                     System.out.println(results.size());
                     for (int i = 0; i < results.size(); i++) {
+                        StackPane pane = new StackPane();
                         List<Tag> tag = results.get(i).getTags();
                         System.out.println(lists.get(i).getName()); //Prints out name of image.
                         ImageView viewer = new ImageView();
@@ -74,10 +77,14 @@ public class GUI extends Application {
                         viewer.setFitWidth(300);
                         Image image = new Image(lists.get(i).toURI().toString());
                         viewer.setImage(image);
-                        root.getChildren().add(viewer);
+                        pane.getChildren().add(viewer);
                         for (int j = 0; j < tag.size(); j++) {
                             System.out.println(tag.get(j).getName() + ": " + tag.get(j).getProbability());
+                            Text text = new Text(tag.get(j).getName() + ": " + tag.get(j).getProbability());
+                            pane.getChildren().add(text);
+                            break; // Add only one tag.
                         }
+                        root.getChildren().add(pane);
                     }
                     // Open a new window with the images and tags.
                     Scene scene = new Scene(root, 800, 600);
