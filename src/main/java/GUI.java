@@ -127,6 +127,8 @@ public class GUI extends Application {
                 Webcam webcam = Webcam.getDefault();
                 webcam.open();
                 ImageView viewer = new ImageView();
+                viewer.setFitHeight(800);
+                viewer.setFitWidth(600);
                 Image image = SwingFXUtils.toFXImage(webcam.getImage(), null);
                 viewer.setImage(image);
                 FlowPane root = new FlowPane();
@@ -135,6 +137,7 @@ public class GUI extends Application {
                 Stage test = new Stage();
                 test.setScene(scene);
                 test.show();
+                webcam.close();
             }
         });
 
