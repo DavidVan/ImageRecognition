@@ -13,6 +13,8 @@ public class Main {
 
     public static String selectedPath;
     public static String selectedDestination;
+    public static File[] lists; //Saves the lists into an array so we can reaccess the names
+
 
     public static void main(String[] args) throws IOException {
 
@@ -29,33 +31,36 @@ public class Main {
         ClarifaiClient client = new ClarifaiClient(secrets[0], secrets[1]);
         List<RecognitionResult> results = client.recognize(new RecognitionRequest(new File("test.jpg")));
 
-        for (Tag tag : results.get(0).getTags()) {
-            System.out.println(tag.getName() + ": " + tag.getProbability());
-        }
-
         GUI.launch(GUI.class);
         System.out.println(selectedPath);
 
         List<RecognitionResult> test = Container(client);
-
+        for (int i = 0; i < test.size(); i++) {
+            List<Tag> tag = test.get(i).getTags();
+            System.out.println(lists[i].getName()); //Prints out name of image.
+            for ( int j = 0; j < tag.size(); j++){
+                System.out.println(tag.get(j).getName() + ": " + tag.get(j).getProbability());
+            }
+        }
     }
 
     public static List<RecognitionResult> Container(ClarifaiClient client) {
         File file = new File(selectedPath);
         File[] files = file.listFiles();
+        lists = files;
         // These statements check to see if the files are readable since the OS denies access to its files.
-        if (file.canRead()) {
-            System.out.println("I made it here");
-        }
-        else {
-            file.setReadable(true);
-        }
+//        if (file.canRead()) {
+//            System.out.println("I made it here");
+//        }
+//        else {
+//            file.setReadable(true);
+//        }
         // End of checking.
         List<RecognitionResult> results = client.recognize(new RecognitionRequest(files));
         if (results != null) {
             //Checking Size of List to make sure every file was saved.
-            int z = results.size();
-            System.out.println("I made it?" + "  " + z);
+//            int z = results.size();
+//            System.out.println("I made it?" + "  " + z);
             return results;
         }
         else {
