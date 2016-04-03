@@ -134,7 +134,7 @@ public class GUI extends Application {
         File file = new File(selectedPath);
         List<File> files = new LinkedList(Arrays.asList(file.listFiles()));
         for (int i = 0; i < files.size(); i++) {
-            if (!files.get(i).getName().contains("jpg") || !files.get(i).getName().contains("png")) {
+            if (!files.get(i).getName().contains("jpg") && !files.get(i).getName().contains("png")) {
                 files.remove(i);
             }
         }
