@@ -4,6 +4,7 @@ import com.clarifai.api.RecognitionResult;
 import com.clarifai.api.Tag;
 import com.github.sarxos.webcam.Webcam;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -125,7 +126,15 @@ public class GUI extends Application {
             public void handle(ActionEvent event) {
                 Webcam webcam = Webcam.getDefault();
                 webcam.open();
+                ImageView viewer = new ImageView();
+                Image image = SwingFXUtils.toFXImage(webcam.getImage(), null);
+                viewer.setImage(image);
                 FlowPane root = new FlowPane();
+                root.getChildren().add(viewer);
+                Scene scene = new Scene(root, 800, 600);
+                Stage test = new Stage();
+                test.setScene(scene);
+                test.show();
             }
         });
 
