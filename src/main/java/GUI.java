@@ -70,6 +70,8 @@ public class GUI extends Application {
                         List<Tag> tag = results.get(i).getTags();
                         System.out.println(lists.get(i).getName()); //Prints out name of image.
                         ImageView viewer = new ImageView();
+                        viewer.setFitHeight(300);
+                        viewer.setFitWidth(300);
                         Image image = new Image(lists.get(i).toURI().toString());
                         viewer.setImage(image);
                         root.getChildren().add(viewer);
