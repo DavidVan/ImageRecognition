@@ -12,7 +12,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        // Read in the API keys
+        // Read in the API keys.
         FileReader reader = new FileReader("secrets.txt");
         BufferedReader br = new BufferedReader(reader);
         String[] secrets = new String[2];
@@ -21,7 +21,7 @@ public class Main {
             secrets[i] = br.readLine();
         }
 
-        // Create the client
+        // Create the client.
         ClarifaiClient client = new ClarifaiClient(secrets[0], secrets[1]);
 
         List<RecognitionResult> results = client.recognize(new RecognitionRequest(new File("test.jpg")));
